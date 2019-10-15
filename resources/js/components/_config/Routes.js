@@ -18,6 +18,7 @@ import Cart from "../page/common/Cart";
 import About from "../page/common/About";
 import Contact from "../page/common/Contact";
 import Checkout from "../page/common/Checkout";
+import Search from "../page/common/Search";
 
 const Routes = childProps => {
     return (
@@ -44,6 +45,7 @@ const Routes = childProps => {
                 component={Product}
             />
             <Public exact path="/menu" component={Menu} />
+            <Public path="/search" childProps={childProps} component={Search} />
             <Public
                 exact
                 path="/cart"

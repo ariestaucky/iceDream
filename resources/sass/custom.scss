@@ -14,7 +14,7 @@ body {
     position: relative;
     background-color: #343a40;
     height: 100vh;
-    background: url(https://images.pexels.com/photos/821054/pexels-photo-821054.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260)
+    background: url("public/public/background_image/pexels-photo-821054.jpeg")
         no-repeat fixed center center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -48,6 +48,14 @@ body {
             opacity: 1;
         }
     }
+}
+
+.upload {
+    border: none !important;
+}
+
+.custom-h {
+    height: 20px;
 }
 
 // Upper Nav
@@ -166,7 +174,7 @@ body {
             rgba(255, 255, 255, 0.7686274509803922),
             rgba(255, 255, 255, 0.7686274509803922)
         ),
-        url(http://www.annarecetasfaciles.com/files/pancakes-o-tortitas-americanas-portada.jpg)
+        url("public/public/background_image/pancakes-o-tortitas-americanas-portada.jpg")
             no-repeat center center fixed;
     background-size: cover;
     min-height: 100%;
@@ -304,6 +312,61 @@ ol {
     color: #333;
     margin: auto 6px;
     user-select: none;
+}
+
+.add-button:active {
+    -webkit-animation: flash 0.3s;
+    -moz-animation: flash 0.3s;
+    animation: flash 0.3s;
+}
+@-webkit-keyframes bounce {
+    to {
+        -webkit-transform: scale(1.2);
+    }
+}
+@-moz-keyframes bounce {
+    to {
+        -moz-transform: scale(1.2);
+    }
+}
+@keyframes bounce {
+    to {
+        transform: scale(1.2);
+    }
+}
+
+@keyframes flash {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@-webkit-keyframes flash {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@-moz-keyframes flash {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 // Login Form
@@ -507,22 +570,29 @@ ol {
     cursor: pointer;
 }
 
-.item-number {
-    border-radius: 3px;
+.btn-primary .item-number {
+    // border-radius: 3px;
     // background-color: rgba(0, 0, 0, 0.1);
-    height: 20px;
+    height: 22px;
     // padding: 3px 6px;
-    padding: 0px 6px;
+    // padding: 0px 6px;
     font-weight: bold;
-    display: inline-block;
+    // display: inline-block;
     // color: #fff;
     line-height: 5px;
     // line-height: 12px;
     // margin-left: 10px;
-    margin-left: -17px;
-    margin-top: -8px;
+    margin-left: -4px;
+    margin-top: -18px;
     font-size: 15px;
     position: absolute;
+    // position: absolute;
+    // top: 5px;
+    // right: 38px;
+    padding: 7px 8px;
+    border-radius: 50%;
+    background: red;
+    color: white;
 }
 
 // Cart
@@ -776,12 +846,46 @@ ol {
     overflow: hidden;
 }
 
+// Floating Button
+.button {
+    position: fixed;
+    right: 10%;
+    bottom: 10%;
+    padding: 10px 18px;
+    font-size: 24px;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    color: #fff;
+    border: none;
+    border-radius: 15px;
+    // box-shadow: 0 9px #999;
+}
+
+.button:active {
+    transform: translateY(4px);
+}
+
+.button .badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    padding: 5px 10px;
+    border-radius: 50%;
+    background: red;
+    color: white;
+}
+
 // Checkout page
 .wrapper-1 {
     width: 100%;
-    height: 100vh;
     display: flex;
     flex-direction: column;
+    height: initial;
+    max-width: 620px;
+    margin: 0 auto;
+    margin-top: 35px;
+    box-shadow: 4px 8px 40px 8px rgba(88, 146, 255, 0.2);
 }
 .wrapper-2 {
     padding: 30px;
@@ -827,13 +931,56 @@ ol {
     box-shadow: 0 10px 16px 1px rgba(174, 199, 251, 1);
 }
 
-@media (min-width: 360px) {
-    .awesome {
-        font-size: 4.5em;
-    }
-    .go-home {
-        margin-bottom: 20px;
-    }
+// Search Page
+/* Global settings */
+.search-cart-image {
+    float: left;
+    width: 20%;
+    text-align: center;
+}
+
+.search-cart-details {
+    float: left;
+    width: 50%;
+    padding-left: 5px;
+    margin-right: 15px;
+}
+
+.search-cart-price {
+    float: left;
+    width: 4%;
+}
+
+.search-cart-quantity {
+    float: left;
+    width: 10%;
+    text-align: center;
+}
+
+.search-line-price {
+    float: left;
+    width: 8%;
+    text-align: center;
+}
+
+.search-cart {
+    margin-top: 0 !important;
+}
+
+.add-product-search {
+    border: 0;
+    padding: 4px 8px;
+    font-family: "HelveticaNeue-Medium", "Helvetica Neue Medium";
+    font-size: 12px;
+    border-radius: 3px;
+}
+
+.awesome {
+    font-size: 4.5em;
+}
+
+.go-home {
+    margin-bottom: 20px;
 }
 
 @media (min-width: 600px) {
@@ -841,34 +988,54 @@ ol {
         max-width: 1000px;
         margin: 0 auto;
     }
-    .wrapper-1 {
-        height: initial;
-        max-width: 620px;
-        margin: 0 auto;
-        margin-top: 100px;
-        box-shadow: 4px 8px 40px 8px rgba(88, 146, 255, 0.2);
+}
+
+/* Make adjustments for wider screen */
+@media screen and (min-width: 992px) {
+    .product-cart {
+        .search-price-part {
+            float: left;
+            width: 4%;
+            text-align: center;
+        }
+
+        .search-qty-part {
+            float: left;
+            width: 10%;
+            padding-left: 18px;
+        }
     }
 }
 
 /* Make adjustments for larger screen */
 @media screen and (min-width: 768px) {
-    .small-nav {
+    .small-nav,
+    .cart-button {
         display: block;
     }
 
-    .burger {
+    .burger,
+    .button {
+        display: none;
+    }
+
+    .search-cart-price,
+    .search-cart-quantity,
+    .search-line-price {
         display: none;
     }
 }
 
 /* Make adjustments for small laptop */
 @media screen and (max-width: 768px) {
-    .small-nav {
-        display: none;
-    }
-
+    .cart-button,
     .burger {
         display: block;
+    }
+
+    .small-nav,
+    .button {
+        display: none;
     }
 
     .large-nav {
@@ -876,10 +1043,36 @@ ol {
         top: 0;
         z-index: 99;
     }
+
+    .search-cart-price,
+    .search-cart-quantity,
+    .search-line-price {
+        display: none;
+    }
 }
 
 /* Make adjustments for tablet */
 @media screen and (max-width: 650px) {
+    .awesome {
+        font-size: 2.5em;
+        letter-spacing: 1px;
+    }
+
+    .wrapper-1 {
+        margin-top: 2.5rem;
+    }
+    .right-input {
+        width: 40% !important;
+    }
+
+    .cart-button {
+        display: none;
+    }
+
+    .button {
+        display: block;
+    }
+
     .shopping-cart {
         margin: 0;
         padding-top: 20px;
@@ -916,9 +1109,9 @@ ol {
         input {
             margin-left: 20px;
         }
-        &:before {
-            content: "x";
-        }
+        // &:before {
+        //     content: "x";
+        // }
     }
 
     .product-cart-removal {
@@ -932,6 +1125,14 @@ ol {
 }
 /* Make more adjustments for phone */
 @media screen and (max-width: 350px) {
+    .right-side {
+        margin-left: auto;
+    }
+
+    .right-input {
+        width: 40% !important;
+    }
+
     .product-cart-removal {
         float: right;
     }

@@ -7,9 +7,11 @@ class addProduct extends Component {
         this.state = {
             name: "",
             image: "",
-            errors: []
+            errors: [],
+            loading: false
         };
         this.handleFieldChange = this.handleFieldChange.bind(this);
+        this.handleImageChange = this.handleImageChange.bind(this);
         this.handleAddProduct = this.handleAddProduct.bind(this);
         this.hasErrorFor = this.hasErrorFor.bind(this);
         this.renderErrorFor = this.renderErrorFor.bind(this);
@@ -21,25 +23,34 @@ class addProduct extends Component {
         });
     }
 
+    handleImageChange(event) {
+        this.setState({
+            [event.target.name]: event.target.files[0]
+        });
+    }
+
     handleAddProduct(event) {
         event.preventDefault();
 
+        this.setState({ loading: true });
+
         const { history } = this.props;
 
-        const product = {
-            name: this.state.name,
-            image: this.state.image
-        };
+        const formData = new FormData();
+        formData.append("image", this.state.image);
+        formData.append("name", this.state.name);
 
         axios
-            .post("/api/addproduct", product)
+            .post("/api/addproduct", formData)
             .then(response => {
+                this.setState({ loading: false });
                 // redirect to the homepage
                 history.push("/product");
             })
             .catch(error => {
                 this.setState({
-                    errors: error.response.data.errors
+                    errors: error.response.data.errors,
+                    loading: false
                 });
             });
     }
@@ -66,7 +77,10 @@ class addProduct extends Component {
                         <div className="card">
                             <div className="card-header">Add Product</div>
                             <div className="card-body">
-                                <form onSubmit={this.handleAddProduct}>
+                                <form
+                                    onSubmit={this.handleAddProduct}
+                                    encType="multipart/form-data"
+                                >
                                     <div className="form-group">
                                         <label htmlFor="name">
                                             Product name
@@ -87,23 +101,32 @@ class addProduct extends Component {
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="image">Image</label>
-                                        <textarea
+                                        <input
                                             id="image"
-                                            className={`form-control ${
+                                            className={`form-control upload ${
                                                 this.hasErrorFor("image")
                                                     ? "is-invalid"
                                                     : ""
                                             }`}
                                             name="image"
-                                            rows="10"
-                                            value={this.state.image}
-                                            onChange={this.handleFieldChange}
+                                            type="file"
+                                            onChange={this.handleImageChange}
                                         />
                                         {this.renderErrorFor("image")}
                                     </div>
-                                    <button className="btn btn-primary">
-                                        Create
-                                    </button>
+                                    {this.state.loading ? (
+                                        <button
+                                            className="btn btn-primary"
+                                            disabled="disabled"
+                                        >
+                                            <i className="fas fa-spinner fa-pulse load-circle"></i>
+                                            Adding...
+                                        </button>
+                                    ) : (
+                                        <button className="btn btn-primary">
+                                            Add Product
+                                        </button>
+                                    )}
                                 </form>
                             </div>
                         </div>

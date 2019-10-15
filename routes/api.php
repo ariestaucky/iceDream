@@ -25,7 +25,7 @@ Route::group(['middleware' => ['guest:api']], function () {
     Route::post('register', 'AuthenticationController@register');
 });
 
-Route::group(['middleware' => ['auth:api', 'Header']], function() {
+Route::group(['middleware' => ['auth:api']], function() {
     Route::get('logout', 'AuthenticationController@logout');
     Route::post('check', 'AuthenticationController@check');
 
@@ -44,3 +44,4 @@ Route::get('product', 'ProductController@product');
 Route::get('product/{id}', 'ProductController@show');
 Route::get('item', 'ItemController@item');
 Route::get('item/{id}', 'ItemController@show');
+Route::get('search', 'ItemController@search');

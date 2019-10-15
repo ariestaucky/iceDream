@@ -17,7 +17,7 @@ body {
   position: relative;
   background-color: #343a40;
   height: 100vh;
-  background: url(https://images.pexels.com/photos/821054/pexels-photo-821054.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260) no-repeat fixed center center;
+  background: url(/images/pexels-photo-821054.jpeg?292892d1b6383daebaafa2a914ce3c26) no-repeat fixed center center;
   background-size: cover;
 }
 
@@ -52,6 +52,14 @@ body {
   background: red;
   color: #fff;
   opacity: 1;
+}
+
+.upload {
+  border: none !important;
+}
+
+.custom-h {
+  height: 20px;
 }
 
 .small-nav {
@@ -161,7 +169,7 @@ body {
 
 .mybg {
   position: relative;
-  background: linear-gradient(to right, rgba(255, 255, 255, 0.768627451), rgba(255, 255, 255, 0.768627451)), url(http://www.annarecetasfaciles.com/files/pancakes-o-tortitas-americanas-portada.jpg) no-repeat center center fixed;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.768627451), rgba(255, 255, 255, 0.768627451)), url(/images/pancakes-o-tortitas-americanas-portada.jpg?fc93913b60d81389fc250d147778b60d) no-repeat center center fixed;
   background-size: cover;
   min-height: 100%;
 }
@@ -292,6 +300,51 @@ ol {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+}
+
+.add-button:active {
+  -webkit-animation: flash 0.3s;
+  animation: flash 0.3s;
+}
+
+@-webkit-keyframes bounce {
+  to {
+    -webkit-transform: scale(1.2);
+  }
+}
+
+@keyframes bounce {
+  to {
+    transform: scale(1.2);
+  }
+}
+
+@keyframes flash {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes flash {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 .top-space {
@@ -492,17 +545,18 @@ ol {
   cursor: pointer;
 }
 
-.item-number {
-  border-radius: 3px;
-  height: 20px;
-  padding: 0px 6px;
+.btn-primary .item-number {
+  height: 22px;
   font-weight: bold;
-  display: inline-block;
   line-height: 5px;
-  margin-left: -17px;
-  margin-top: -8px;
+  margin-left: -4px;
+  margin-top: -18px;
   font-size: 15px;
   position: absolute;
+  padding: 7px 8px;
+  border-radius: 50%;
+  background: red;
+  color: white;
 }
 
 /* Global settings */
@@ -799,11 +853,43 @@ ol {
   overflow: hidden;
 }
 
+.button {
+  position: fixed;
+  right: 10%;
+  bottom: 10%;
+  padding: 10px 18px;
+  font-size: 24px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  border: none;
+  border-radius: 15px;
+}
+
+.button:active {
+  transform: translateY(4px);
+}
+
+.button .badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  padding: 5px 10px;
+  border-radius: 50%;
+  background: red;
+  color: white;
+}
+
 .wrapper-1 {
   width: 100%;
-  height: 100vh;
   display: flex;
   flex-direction: column;
+  height: initial;
+  max-width: 620px;
+  margin: 0 auto;
+  margin-top: 35px;
+  box-shadow: 4px 8px 40px 8px rgba(88, 146, 255, 0.2);
 }
 
 .wrapper-2 {
@@ -852,14 +938,56 @@ ol {
   box-shadow: 0 10px 16px 1px #aec7fb;
 }
 
-@media (min-width: 360px) {
-  .awesome {
-    font-size: 4.5em;
-  }
+/* Global settings */
 
-  .go-home {
-    margin-bottom: 20px;
-  }
+.search-cart-image {
+  float: left;
+  width: 20%;
+  text-align: center;
+}
+
+.search-cart-details {
+  float: left;
+  width: 50%;
+  padding-left: 5px;
+  margin-right: 15px;
+}
+
+.search-cart-price {
+  float: left;
+  width: 4%;
+}
+
+.search-cart-quantity {
+  float: left;
+  width: 10%;
+  text-align: center;
+}
+
+.search-line-price {
+  float: left;
+  width: 8%;
+  text-align: center;
+}
+
+.search-cart {
+  margin-top: 0 !important;
+}
+
+.add-product-search {
+  border: 0;
+  padding: 4px 8px;
+  font-family: "HelveticaNeue-Medium", "Helvetica Neue Medium";
+  font-size: 12px;
+  border-radius: 3px;
+}
+
+.awesome {
+  font-size: 4.5em;
+}
+
+.go-home {
+  margin-bottom: 20px;
 }
 
 @media (min-width: 600px) {
@@ -867,24 +995,40 @@ ol {
     max-width: 1000px;
     margin: 0 auto;
   }
+}
 
-  .wrapper-1 {
-    height: initial;
-    max-width: 620px;
-    margin: 0 auto;
-    margin-top: 100px;
-    box-shadow: 4px 8px 40px 8px rgba(88, 146, 255, 0.2);
+/* Make adjustments for wider screen */
+
+@media screen and (min-width: 992px) {
+  .product-cart .search-price-part {
+    float: left;
+    width: 4%;
+    text-align: center;
+  }
+
+  .product-cart .search-qty-part {
+    float: left;
+    width: 10%;
+    padding-left: 18px;
   }
 }
 
 /* Make adjustments for larger screen */
 
 @media screen and (min-width: 768px) {
-  .small-nav {
+  .small-nav,
+  .cart-button {
     display: block;
   }
 
-  .burger {
+  .burger,
+  .button {
+    display: none;
+  }
+
+  .search-cart-price,
+  .search-cart-quantity,
+  .search-line-price {
     display: none;
   }
 }
@@ -892,12 +1036,14 @@ ol {
 /* Make adjustments for small laptop */
 
 @media screen and (max-width: 768px) {
-  .small-nav {
-    display: none;
-  }
-
+  .cart-button,
   .burger {
     display: block;
+  }
+
+  .small-nav,
+  .button {
+    display: none;
   }
 
   .large-nav {
@@ -906,11 +1052,38 @@ ol {
     top: 0;
     z-index: 99;
   }
+
+  .search-cart-price,
+  .search-cart-quantity,
+  .search-line-price {
+    display: none;
+  }
 }
 
 /* Make adjustments for tablet */
 
 @media screen and (max-width: 650px) {
+  .awesome {
+    font-size: 2.5em;
+    letter-spacing: 1px;
+  }
+
+  .wrapper-1 {
+    margin-top: 2.5rem;
+  }
+
+  .right-input {
+    width: 40% !important;
+  }
+
+  .cart-button {
+    display: none;
+  }
+
+  .button {
+    display: block;
+  }
+
   .shopping-cart {
     margin: 0;
     padding-top: 20px;
@@ -949,10 +1122,6 @@ ol {
     margin-left: 20px;
   }
 
-  .product-cart-quantity:before {
-    content: "x";
-  }
-
   .product-cart-removal {
     width: auto;
   }
@@ -966,6 +1135,14 @@ ol {
 /* Make more adjustments for phone */
 
 @media screen and (max-width: 350px) {
+  .right-side {
+    margin-left: auto;
+  }
+
+  .right-input {
+    width: 40% !important;
+  }
+
   .product-cart-removal {
     float: right;
   }

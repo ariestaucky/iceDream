@@ -56,13 +56,13 @@ class MenuDetailList extends Component {
                                     />
                                     <button
                                         type="button"
-                                        className="btn btn-primary"
+                                        className="add-button btn btn-primary"
                                         onClick={this.addToCart.bind(
                                             shooping_cart
                                         )}
                                     >
                                         <i className="fas fa-cart-plus"></i>
-                                        &nbsp;Add
+                                        <span>&nbsp;Add</span>
                                     </button>
                                 </div>
                             ) : (

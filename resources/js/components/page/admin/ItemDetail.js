@@ -33,6 +33,7 @@ export default class ItemDetail extends Component {
         const itemId = this.state.item.id;
 
         axios.delete(`/api/deleteitem/${itemId}`).then(response => {
+            console.log(response.data);
             this.props.history.push("/product");
         });
     }

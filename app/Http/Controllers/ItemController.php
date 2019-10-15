@@ -19,15 +19,27 @@ class ItemController extends Controller
         $validatedData = $request->validate([
             'name' => 'required',
             'description' => 'required',
-            'image' => 'required',
+            'image' => 'required|mimes:jpeg,jpg,png|max:599',
             'price' => 'required',
             'item_qty' => 'required',
         ]);
 
+        $NameArray = explode(' ',$request->name);
+        $first_name = $NameArray[0];
+
+        // Get filename with the extension
+        $filenameWithExt = $request->file('image')->getClientOriginalName();
+        // Get just ext
+        $extension = $request->file('image')->getClientOriginalExtension();
+        // Filename to store
+        $fileNameToStore= "item_".trim(strtolower($first_name)).trim(substr(time(), 0,4)).time().'.'.$extension;
+        // Upload Image
+        $path = $request->file('image')->move('public/item_image', $fileNameToStore);
+
         $item = Item::create([
             'name' => $validatedData['name'],
             'description' => $validatedData['description'],
-            'image' => $validatedData['image'],
+            'image' => url('public/item_image/'.$fileNameToStore),
             'price' => $validatedData['price'],
             'item_qty' => $validatedData['item_qty'],
             'product_id' => $request->product_id,
@@ -50,15 +62,27 @@ class ItemController extends Controller
         $validatedData = $request->validate([
             'name' => 'required',
             'description' => 'required',
-            'image' => 'required',
+            'image' => 'required|mimes:jpeg,jpg,png|max:599',
             'price' => 'required',
             'item_qty' => 'required',
         ]);
 
+        $NameArray = explode(' ',$request->name);
+        $first_name = $NameArray[0];
+
+        // Get filename with the extension
+        $filenameWithExt = $request->file('image')->getClientOriginalName();
+        // Get just ext
+        $extension = $request->file('image')->getClientOriginalExtension();
+        // Filename to store
+        $fileNameToStore= "item_".trim(strtolower($first_name)).trim(substr(time(), 0,4)).time().'.'.$extension;
+        // Upload Image
+        $path = $request->file('image')->move('public/item_image', $fileNameToStore);
+
         $item->update([
             'name' => $validatedData['name'],
             'description' => $validatedData['description'],
-            'image' => $validatedData['image'],
+            'image' => url('public/item_image/'.$fileNameToStore),
             'price' => $validatedData['price'],
             'item_qty' => $validatedData['item_qty'],
         ]);
@@ -67,11 +91,21 @@ class ItemController extends Controller
     }
 
     public function delete($id) {
-        $item = Item::findorFail($id);
-        $item->delete();
+        $item = Item::where('id', $id)->delete();
 
-        $response = 'success';
+        if($item) {
+            $response = 'success';
+        } else {
+            $response = 'failed';
+        }
 
         return response()->json($response, 201);
+    }
+
+    public function search(Request $request) 
+    {   
+        $searchTerm = $request->search;
+        $search = Item::search($searchTerm)->get();
+        return response()->json($search, 201);
     }
 }

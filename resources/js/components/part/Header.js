@@ -5,6 +5,16 @@ import UserNav from "./UserNav";
 class Header extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            search: ""
+        };
+        this.handleFieldChange = this.handleFieldChange.bind(this);
+    }
+
+    handleFieldChange(event) {
+        this.setState({
+            [event.target.name]: event.target.value
+        });
     }
 
     componentDidMount() {
@@ -36,6 +46,19 @@ class Header extends Component {
         } else {
             return;
         }
+    }
+
+    handleSearch(e) {
+        e.preventDefault();
+        const keyword = this.state.search;
+        console.log(keyword);
+        axios.get("/api/search?search=" + keyword).then(response => {
+            this.props.history.push({
+                pathname: "/search",
+                search: "?search=".$keyword,
+                state: { detail: response.data }
+            });
+        });
     }
 
     render() {
@@ -81,21 +104,48 @@ class Header extends Component {
                             </Link>
                         </div>
 
-                        <ul className="navbar-nav">
-                            <li className="navbar-item">
-                                <Link
-                                    className="btn btn-primary text-white nav-link"
-                                    to="/cart"
-                                >
-                                    <i className="fas fa-shopping-cart">
-                                        <span className="item-number text-danger">
+                        <div className="row right-input">
+                            <form
+                                className="form-inline mr-2"
+                                role="search"
+                                onSubmit={this.handleSearch.bind(this)}
+                            >
+                                <div className="input-group right-side">
+                                    <input
+                                        className="form-control"
+                                        type="text"
+                                        id="search"
+                                        name="search"
+                                        placeholder="Search"
+                                        aria-label="Search"
+                                        value={this.state.search}
+                                        onChange={this.handleFieldChange}
+                                    />
+                                    {/* <div className="input-group-append">
+                                        <button
+                                            className="btn btn-outline-primary"
+                                            type="submit"
+                                        >
+                                            <i className="fas fa-search"></i>
+                                        </button>
+                                    </div> */}
+                                </div>
+                            </form>
+                            <ul className="navbar-nav cart-button">
+                                <li className="navbar-item">
+                                    <Link
+                                        className="btn btn-primary text-white nav-link"
+                                        to="/cart"
+                                    >
+                                        <i className="fas fa-shopping-cart"></i>
+                                        <span>&nbsp;Cart</span>
+                                        <span className="item-number">
                                             {auth.cart}
                                         </span>
-                                    </i>
-                                    &nbsp;Cart
-                                </Link>
-                            </li>
-                        </ul>
+                                    </Link>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </nav>
             </Fragment>

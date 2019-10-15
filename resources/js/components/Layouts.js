@@ -5,7 +5,7 @@ import Header from "./part/Header";
 import SideDraw from "./part/Sidebar";
 import Backdrop from "./part/Backdrop";
 import Footer from "./part/Footer";
-
+import CartButton from "./_config/CartButton";
 import Routes from "./_config/Routes";
 
 export default class Layouts extends Component {
@@ -100,7 +100,8 @@ export default class Layouts extends Component {
                 <main className="mybg">
                     <Header auth={childProps} />
                     <section id="photos">
-                        <Routes childProps={childProps} />;
+                        <Routes childProps={childProps} />
+                        <CartButton auth={childProps} />
                     </section>
                     <Footer />
                 </main>

@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
+import Loading from "../../_config/Loading_3";
 
 class ProductDetail extends Component {
     constructor(props) {
@@ -9,7 +10,8 @@ class ProductDetail extends Component {
         this.state = {
             product: {},
             items: [],
-            errors: []
+            errors: [],
+            loading: false
         };
 
         this.handleEdit = this.handleEdit.bind(this);
@@ -19,12 +21,15 @@ class ProductDetail extends Component {
     }
 
     componentDidMount() {
+        this.setState({ loading: true });
+
         const productId = this.props.match.params.id;
 
         axios.get(`/api/product/${productId}`).then(response => {
             this.setState({
                 product: response.data.product,
-                items: response.data.items
+                items: response.data.items,
+                loading: false
             });
         });
     }
@@ -67,47 +72,55 @@ class ProductDetail extends Component {
             <div className="container py-4">
                 <div className="row justify-content-center">
                     <div className="col-md-8">
-                        <div className="card">
-                            <div className="card-header d-flex justify-content-between">
-                                {product.product}
-                                <div>
-                                    <span
-                                        className="badge badge-primary badge-pill pointer mr-1"
-                                        onClick={this.handleEdit}
+                        {this.state.loading ? (
+                            <Loading />
+                        ) : (
+                            <div className="card">
+                                <div className="card-header d-flex justify-content-between">
+                                    {product.product}
+                                    <div>
+                                        <span
+                                            className="badge badge-primary badge-pill pointer mr-1"
+                                            onClick={this.handleEdit}
+                                        >
+                                            <i className="fas fa-pen"></i>
+                                        </span>
+                                        <span
+                                            className="badge badge-danger badge-pill pointer"
+                                            onClick={this.handleDelete}
+                                        >
+                                            <i className="fas fa-trash-alt"></i>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div className="card-body">
+                                    <Link
+                                        className="btn btn-primary btn-sm mb-3"
+                                        to={
+                                            "/product/" +
+                                            product.id +
+                                            "/additem"
+                                        }
                                     >
-                                        <i className="fas fa-pen"></i>
-                                    </span>
-                                    <span
-                                        className="badge badge-danger badge-pill pointer"
-                                        onClick={this.handleDelete}
-                                    >
-                                        <i className="fas fa-trash-alt"></i>
-                                    </span>
+                                        Add Item
+                                    </Link>
+                                    <ul className="list-group list-group-flush">
+                                        {items == ""
+                                            ? "No Menu Added"
+                                            : items.map(item => (
+                                                  <Link
+                                                      className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                                                      to={`/product/${product.id}/item/${item.id}`}
+                                                      key={item.id}
+                                                  >
+                                                      {item.name}
+                                                  </Link>
+                                              ))}
+                                    </ul>
                                 </div>
                             </div>
-
-                            <div className="card-body">
-                                <Link
-                                    className="btn btn-primary btn-sm mb-3"
-                                    to={"/product/" + product.id + "/additem"}
-                                >
-                                    Add Item
-                                </Link>
-                                <ul className="list-group list-group-flush">
-                                    {items == ""
-                                        ? "No Menu Added"
-                                        : items.map(item => (
-                                              <Link
-                                                  className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-                                                  to={`/product/${product.id}/item/${item.id}`}
-                                                  key={item.id}
-                                              >
-                                                  {item.name}
-                                              </Link>
-                                          ))}
-                                </ul>
-                            </div>
-                        </div>
+                        )}
                     </div>
                 </div>
             </div>

@@ -11,26 +11,39 @@ class EditItem extends Component {
             description: "",
             price: "",
             item_qty: "",
-            errors: []
+            errors: [],
+            loading: false
         };
         this.handleFieldChange = this.handleFieldChange.bind(this);
+        this.handleImageChange = this.handleImageChange.bind(this);
         this.handleEditItem = this.handleEditItem.bind(this);
         this.hasErrorFor = this.hasErrorFor.bind(this);
         this.renderErrorFor = this.renderErrorFor.bind(this);
     }
 
     componentDidMount() {
+        this.setState({ loading: true });
+
         const itemId = this.props.match.params.id;
 
-        axios.get(`/api/item/${itemId}`).then(response => {
-            this.setState({
-                name: response.data.name,
-                image: response.data.image,
-                description: response.data.description,
-                price: response.data.price,
-                item_qty: response.data.item_qty
+        axios
+            .get(`/api/item/${itemId}`)
+            .then(response => {
+                this.setState({
+                    name: response.data.name,
+                    // image: response.data.image,
+                    description: response.data.description,
+                    price: response.data.price,
+                    item_qty: response.data.item_qty,
+                    loading: false
+                });
+            })
+            .catch(error => {
+                this.setState({
+                    errors: error.response.data.errors,
+                    loading: false
+                });
             });
-        });
     }
 
     handleFieldChange(event) {
@@ -39,24 +52,32 @@ class EditItem extends Component {
         });
     }
 
+    handleImageChange(event) {
+        this.setState({
+            [event.target.name]: event.target.files[0]
+        });
+    }
+
     handleEditItem(event) {
         event.preventDefault();
+
+        this.setState({ loading: true });
 
         const { history } = this.props;
 
         const itemId = this.props.match.params.id;
 
-        const item = {
-            name: this.state.name,
-            description: this.state.description,
-            price: this.state.price,
-            item_qty: this.state.item_qty,
-            image: this.state.image
-        };
+        const formData = new FormData();
+        formData.append("image", this.state.image);
+        formData.append("name", this.state.name);
+        formData.append("description", this.state.description);
+        formData.append("price", this.state.price);
+        formData.append("item_qty", this.state.item_qty);
 
         axios
-            .post(`/api/edititem/${itemId}`, item, { _method: "patch" })
+            .post(`/api/edititem/${itemId}`, formData, { _method: "patch" })
             .then(response => {
+                this.setState({ loading: false });
                 // redirect
                 history.push(
                     "/product/" +
@@ -67,7 +88,8 @@ class EditItem extends Component {
             })
             .catch(error => {
                 this.setState({
-                    errors: error.response.data.errors
+                    errors: error.response.data.errors,
+                    loading: false
                 });
             });
     }
@@ -115,15 +137,14 @@ class EditItem extends Component {
                                         <label htmlFor="image">Image</label>
                                         <input
                                             id="image"
-                                            type="text"
-                                            className={`form-control ${
+                                            type="file"
+                                            className={`form-control upload ${
                                                 this.hasErrorFor("image")
                                                     ? "is-invalid"
                                                     : ""
                                             }`}
                                             name="image"
-                                            value={this.state.image}
-                                            onChange={this.handleFieldChange}
+                                            onChange={this.handleImageChange}
                                         />
                                         {this.renderErrorFor("image")}
                                     </div>
@@ -179,9 +200,19 @@ class EditItem extends Component {
                                         />
                                         {this.renderErrorFor("description")}
                                     </div>
-                                    <button className="btn btn-primary">
-                                        Create
-                                    </button>
+                                    {this.state.loading ? (
+                                        <button
+                                            className="btn btn-primary"
+                                            disabled="disabled"
+                                        >
+                                            <i className="fas fa-spinner fa-pulse load-circle"></i>
+                                            Editing...
+                                        </button>
+                                    ) : (
+                                        <button className="btn btn-primary">
+                                            Edit Item
+                                        </button>
+                                    )}
                                 </form>
                             </div>
                         </div>

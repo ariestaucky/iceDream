@@ -10,9 +10,11 @@ class addItem extends Component {
             description: "",
             price: "",
             item_qty: "",
-            errors: []
+            errors: [],
+            loading: false
         };
         this.handleFieldChange = this.handleFieldChange.bind(this);
+        this.handleImageChange = this.handleImageChange.bind(this);
         this.handleAddItem = this.handleAddItem.bind(this);
         this.hasErrorFor = this.hasErrorFor.bind(this);
         this.renderErrorFor = this.renderErrorFor.bind(this);
@@ -24,29 +26,38 @@ class addItem extends Component {
         });
     }
 
+    handleImageChange(event) {
+        this.setState({
+            [event.target.name]: event.target.files[0]
+        });
+    }
+
     handleAddItem(event) {
         event.preventDefault();
 
+        this.setState({ loading: true });
+
         const { history } = this.props;
 
-        const item = {
-            name: this.state.name,
-            description: this.state.description,
-            price: this.state.price,
-            item_qty: this.state.item_qty,
-            product_id: this.props.match.params.id,
-            image: this.state.image
-        };
+        const formData = new FormData();
+        formData.append("image", this.state.image);
+        formData.append("name", this.state.name);
+        formData.append("description", this.state.description);
+        formData.append("price", this.state.price);
+        formData.append("item_qty", this.state.item_qty);
+        formData.append("product_id", this.props.match.params.id);
 
         axios
-            .post("/api/additem", item)
+            .post("/api/additem", formData)
             .then(response => {
+                this.setState({ loading: false });
                 // redirect
                 history.push("/product/" + this.props.match.params.id);
             })
             .catch(error => {
                 this.setState({
-                    errors: error.response.data.errors
+                    errors: error.response.data.errors,
+                    loading: false
                 });
             });
     }
@@ -94,15 +105,14 @@ class addItem extends Component {
                                         <label htmlFor="image">Image</label>
                                         <input
                                             id="image"
-                                            type="text"
-                                            className={`form-control ${
+                                            type="file"
+                                            className={`form-control upload ${
                                                 this.hasErrorFor("image")
                                                     ? "is-invalid"
                                                     : ""
                                             }`}
                                             name="image"
-                                            value={this.state.image}
-                                            onChange={this.handleFieldChange}
+                                            onChange={this.handleImageChange}
                                         />
                                         {this.renderErrorFor("image")}
                                     </div>
@@ -158,9 +168,19 @@ class addItem extends Component {
                                         />
                                         {this.renderErrorFor("description")}
                                     </div>
-                                    <button className="btn btn-primary">
-                                        Create
-                                    </button>
+                                    {this.state.loading ? (
+                                        <button
+                                            className="btn btn-primary"
+                                            disabled="disabled"
+                                        >
+                                            <i className="fas fa-spinner fa-pulse load-circle"></i>
+                                            Adding...
+                                        </button>
+                                    ) : (
+                                        <button className="btn btn-primary">
+                                            Add Item
+                                        </button>
+                                    )}
                                 </form>
                             </div>
                         </div>

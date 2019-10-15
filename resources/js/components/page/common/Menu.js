@@ -8,11 +8,12 @@ class Menu extends Component {
         super();
         this.state = {
             products: [],
-            loading: true
+            loading: false
         };
     }
 
     componentDidMount() {
+        this.setState({ loading: true });
         Axios.get("/api/product").then(response => {
             this.setState({ products: response.data, loading: false });
         });
